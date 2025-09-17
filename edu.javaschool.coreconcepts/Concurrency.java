@@ -52,10 +52,8 @@ public class Concurrency {
 
     static class PrinterQueue {
         private final java.util.concurrent.Semaphore semaphore;
-        private final int maxPrinters;
 
         public PrinterQueue(int maxPrinters) {
-            this.maxPrinters = maxPrinters;
             this.semaphore = new java.util.concurrent.Semaphore(maxPrinters);
         }
 
