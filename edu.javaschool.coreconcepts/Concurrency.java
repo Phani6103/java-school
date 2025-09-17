@@ -73,6 +73,36 @@ public class Concurrency {
         }
     }
 
+    // --- 4. Using the volatile keyword for visibility ---
+    // The volatile keyword ensures that changes to a variable are always visible to other threads.
+    // It guarantees that any thread that reads the field will see the most recent value written to it.
+    // It does NOT provide atomicity for compound actions (like incrementing).
+
+    static class Worker implements Runnable {
+        // Without volatile, the change to 'running' might not be visible to the worker thread,
+        // potentially causing an infinite loop on some systems.
+        private volatile boolean running = true;
+
+        public void stop() {
+            running = false;
+            System.out.println("Stop signal sent to worker.");
+        }
+
+        @Override
+        public void run() {
+            while (running) {
+                // Simulate some work
+                System.out.println("Worker is running...");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt(); // Restore the interrupted status
+                }
+            }
+            System.out.println("Worker has stopped.");
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("--- Demonstrating ExecutorService and Future ---");
         java.util.concurrent.ExecutorService executorService = java.util.concurrent.Executors.newFixedThreadPool(2);
@@ -117,6 +147,26 @@ public class Concurrency {
         new Thread(() -> printerQueue.printDocument("Document 2")).start();
         new Thread(() -> printerQueue.printDocument("Document 3")).start();
         new Thread(() -> printerQueue.printDocument("Document 4")).start();
+
+        // Allow semaphore demo to run for a bit before the next section
+        try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        System.out.println("\n--- Demonstrating the volatile keyword for visibility ---");
+        Worker worker = new Worker();
+        Thread workerThread = new Thread(worker);
+        workerThread.start();
+
+        try {
+            // Let the worker run for a bit
+            Thread.sleep(2100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Signal the worker to stop from the main thread
+        worker.stop();
+        try { workerThread.join(); } catch (InterruptedException e) { e.printStackTrace(); }
+        System.out.println("Main thread confirms worker has finished.");
     }
 
 }
