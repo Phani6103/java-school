@@ -1,4 +1,4 @@
-public class Multithreading {
+    public class Multithreading {
     // --- 1. Extending the Thread class ---
     static class MyThread extends Thread {
         private String threadName;
@@ -60,6 +60,15 @@ public class Multithreading {
         // Non-synchronized method (can lead to race conditions if not careful)
         public void incrementUnsynchronized() {
             count++;
+        }
+
+        // Synchronized block to ensure only one thread can increment at a time
+        public void incrementWithSyncBlock() {
+            // Other non-critical code could go here
+            synchronized (this) { // Acquires the lock on the current Counter instance
+                count++;
+            }
+            // Other non-critical code could go here
         }
 
         public int getCount() {
@@ -151,5 +160,25 @@ public class Multithreading {
 
         // This value will likely be less than 5000 due to race conditions
         System.out.println("Final unsynchronized counter value (likely incorrect due to race condition): " + unsyncedCounter.getCount());
+
+        System.out.println("\n--- Demonstrating Synchronization with a Block ---");
+        Counter blockSyncCounter = new Counter();
+        Runnable blockSyncIncrementTask = () -> {
+            for (int i = 0; i < 1000; i++) {
+                blockSyncCounter.incrementWithSyncBlock();
+            }
+        };
+
+        Thread[] blockSyncThreads = new Thread[5];
+        for (int i = 0; i < blockSyncThreads.length; i++) {
+            blockSyncThreads[i] = new Thread(blockSyncIncrementTask);
+            blockSyncThreads[i].start();
+        }
+
+        for (Thread t : blockSyncThreads) {
+            try { t.join(); } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+
+        System.out.println("Final block-synchronized counter value: " + blockSyncCounter.getCount());
     }
 }
