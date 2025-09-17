@@ -101,6 +101,52 @@ public class Concurrency {
         }
     }
 
+    // --- 5. Using wait(), notify(), and notifyAll() for Inter-thread Communication ---
+    // These methods, part of the Object class, are the fundamental mechanism for making threads cooperate.
+    // They must be called from within a synchronized block on the object being used as a lock.
+    // - wait(): Causes the current thread to release the lock and go into a waiting state.
+    // - notify(): Wakes up a single thread that is waiting on this object's monitor.
+    // - notifyAll(): Wakes up all threads waiting on this object's monitor. It's generally safer to use notifyAll().
+
+    static class MessageBroker {
+        private final java.util.Queue<String> queue = new java.util.LinkedList<>();
+        private final int capacity;
+
+        public MessageBroker(int capacity) {
+            this.capacity = capacity;
+        }
+
+        public synchronized void produce(String message) throws InterruptedException {
+            // Use a while loop to protect against "spurious wakeups"
+            while (queue.size() == capacity) {
+                System.out.println(Thread.currentThread().getName() + ": Queue is full, waiting to produce...");
+                wait(); // Releases the lock and waits for a signal
+            }
+
+            queue.add(message);
+            System.out.println(Thread.currentThread().getName() + ": Produced message '" + message + "'");
+            // Notifies all waiting threads (consumers in this case) that the state has changed.
+            notifyAll(); // notifyAll() is generally safer as it wakes all threads.
+            // Using notify() wakes only one arbitrary thread. It's more efficient but riskier.
+            // notify();
+        }
+
+        public synchronized String consume() throws InterruptedException {
+            while (queue.isEmpty()) {
+                System.out.println(Thread.currentThread().getName() + ": Queue is empty, waiting to consume...");
+                wait(); // Releases the lock and waits for a signal
+            }
+
+            String message = queue.poll();
+            System.out.println(Thread.currentThread().getName() + ": Consumed message '" + message + "'");
+            // Notifies all waiting threads (producers in this case) that the state has changed.
+            // notifyAll();
+            // Using notify() here. In a simple producer/consumer scenario, it works, but it's fragile.
+            notify();
+            return message;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("--- Demonstrating ExecutorService and Future ---");
         java.util.concurrent.ExecutorService executorService = java.util.concurrent.Executors.newFixedThreadPool(2);
@@ -165,6 +211,44 @@ public class Concurrency {
         worker.stop();
         try { workerThread.join(); } catch (InterruptedException e) { e.printStackTrace(); }
         System.out.println("Main thread confirms worker has finished.");
+
+        System.out.println("\n--- Demonstrating wait(), notify(), and notifyAll() ---");
+        MessageBroker messageBroker = new MessageBroker(2); // A small capacity to see waiting
+
+        // Producer thread
+        Thread producer = new Thread(() -> {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    messageBroker.produce("Message " + i);
+                    Thread.sleep(500); // Produce slowly
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }, "Producer");
+
+        // Consumer thread
+        Thread consumer = new Thread(() -> {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    messageBroker.consume();
+                    Thread.sleep(5000); // Consume slowly
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }, "Consumer");
+
+        producer.start();
+        consumer.start();
+
+        try {
+            producer.join();
+            consumer.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Producer-Consumer demo finished.");
     }
 
 }
