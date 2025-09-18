@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ArrayListVsLinkedList {
     public static void main(String[] args) {
-        final int NUM_ELEMENTS = 1_000_000;
+        final int NUM_ELEMENTS = 10_000_000;
 
         // --- ArrayList Demonstration ---
         System.out.println("--- ArrayList Demonstration ---");
@@ -44,7 +44,7 @@ public class ArrayListVsLinkedList {
 
         // --- LinkedList Demonstration ---
         System.out.println("\n--- LinkedList Demonstration ---");
-        LinkedList<String> linkedList = new LinkedList<>();
+        List<String> linkedList = new LinkedList<>();
 
         startTime = System.nanoTime();
         // Adding elements to the end (O(1) - fast)
@@ -62,19 +62,19 @@ public class ArrayListVsLinkedList {
 
         startTime = System.nanoTime();
         // Adding elements to the beginning (O(1) - very fast)
-        linkedList.addFirst("New Element 0");
+        linkedList.add(0, "New Element 0"); // Using the List interface method
         endTime = System.nanoTime();
         System.out.println("LinkedList add to beginning: " + (endTime - startTime) / 1_000_000 + " ms");
         
         startTime = System.nanoTime();
         // Removing elements from the beginning (O(1) - very fast)
-        linkedList.removeFirst();
+        linkedList.remove(0); // Using the List interface method
         endTime = System.nanoTime();
         System.out.println("LinkedList remove from beginning: " + (endTime - startTime) / 1_000_000 + " ms");
 
         startTime = System.nanoTime();
         // Removing elements from the end (O(1) - very fast)
-        linkedList.removeLast();
+        linkedList.remove(linkedList.size() - 1); // Using the List interface method
         endTime = System.nanoTime();
         System.out.println("LinkedList remove from end: " + (endTime - startTime) / 1_000_000 + " ms");
     }
