@@ -1,4 +1,4 @@
-package challenges.w3Schools;
+package w3Schools;
 
 /**
  * A class that demonstrates how to reverse an integer.

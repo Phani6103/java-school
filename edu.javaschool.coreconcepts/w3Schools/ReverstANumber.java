@@ -1,4 +1,4 @@
-package challenges.w3Schools;
+package w3Schools;
 
 public class ReverstANumber {
     public static void main(String[] args) {

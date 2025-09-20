@@ -1,4 +1,4 @@
-package challenges.w3Schools;
+package w3Schools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
