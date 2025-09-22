@@ -2,6 +2,9 @@ package advancedfoundations;
 
 /*
  * Big O notitation
+ Fastest → Slowest
+O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2^n) < O(n!)
+
  */
 public class BigONotation {
     // O(1) - Constant Time Complexity
@@ -53,6 +56,37 @@ public class BigONotation {
         System.out.println();
     }
 
+       // O(n^2) - Quadratic Time Complexity
+    // Example: Nested loops, Bubble Sort, Selection Sort, Insertion Sort
+    public void on2(int[] arr) {
+        System.out.println("O(n^2) Example: Nested loops (e.g., Bubble Sort conceptual).");
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                // System.out.print("(" + arr[i] + "," + arr[j] + ") "); // Example operation
+            }
+        }
+        System.out.println("Completed O(n^2) operation.");
+    }
+
+    // O(2^n) - Exponential Time Complexity
+    // Example: Recursive calculation of Fibonacci numbers without memoization
+    public int o2n(int n) {
+        System.out.println("O(2^n) Example: Recursive Fibonacci (very inefficient for large n).");
+        if (n <= 1) {
+            return n;
+        }
+        return o2n(n - 1) + o2n(n - 2);
+    }
+
+    // O(n!) - Factorial Time Complexity
+    // Example: Traveling Salesperson Problem (brute force), permutations
+    public void onFactorial(int n) {
+        System.out.println("O(n!) Example: Generating permutations (conceptual).");
+        // This is a placeholder as actual O(n!) implementation is complex and rarely used directly
+        // for simple examples due to rapid growth.
+        System.out.println("For n=" + n + ", a factorial operation would be extremely slow.");
+    }
+
     public static void main(String[] args) {
         BigONotation bigONotation = new BigONotation();
         int[] arr = {1, 2, 3, 4, 5};
@@ -66,6 +100,13 @@ public class BigONotation {
         }
         bigONotation.on(arr);
         bigONotation.onlogn(arr);
+
+        System.out.println("\n--- O(n^2) Example ---");
+        bigONotation.on2(arr);
+
+        System.out.println("\n--- O(2^n) Example (Fibonacci) ---");
+        int fibN = 5; // Keep n small for O(2^n)
+        System.out.println("Fibonacci for n=" + fibN + ": " + bigONotation.o2n(fibN));
     }
     
 }
