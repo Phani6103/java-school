@@ -18,7 +18,7 @@ public class SealedClasses {
         // Can add common methods for quadrilaterals
     }
 
-    final record Rectangle(double length, double width) implements Quadrilateral {
+    final record Rectangle(double length, double width) implements Quadrilateral, Shape {
         @Override
         public String getName() {
             return "Rectangle";
@@ -67,10 +67,11 @@ public class SealedClasses {
     }
 
     public static void main(String[] args) {
-        // No enclosing instance needed for static main method
         Shape circle = new Circle(5.0);
         Shape rectangle = new Rectangle(4.0, 6.0);
-        Shape square = new Square(3.0);
+        // To instantiate a non-static inner class (like Square), you need an instance of the outer class.
+        // However, Square is non-sealed, so it can be instantiated directly if it were static or in its own file.
+        Shape square = new SealedClasses().new Square(3.0);
 
         describeShape(circle);
         describeShape(rectangle);
