@@ -2,7 +2,7 @@ package advancedfoundations;
 
 public class SealedClasses {
     // 1. Declaring a sealed interface
-    sealed interface Shape permits Circle, Rectangle, Square {
+    sealed interface Shape permits Circle, Rectangle, Square, Quadrilateral {
         String getName();
     }
 
@@ -26,9 +26,10 @@ public class SealedClasses {
     }
 
     // A non-sealed class allows further extension
-    non-sealed class Square extends Rectangle implements Quadrilateral {
+    non-sealed class Square implements Quadrilateral, Shape {
         public Square(double side) {
-            super(side, side);
+            // Records are final and cannot be extended.
+            // Square should encapsulate a Rectangle or implement Quadrilateral directly.
         }
 
         @Override
