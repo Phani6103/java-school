@@ -1,0 +1,80 @@
+package advancedfoundations;
+
+public class SealedClasses {
+    // 1. Declaring a sealed interface
+    sealed interface Shape permits Circle, Rectangle, Square {
+        String getName();
+    }
+
+    // 2. Permitted classes must be declared final, sealed, or non-sealed
+    final record Circle(double radius) implements Shape {
+        @Override
+        public String getName() {
+            return "Circle";
+        }
+    }
+
+    sealed interface Quadrilateral extends Shape permits Rectangle, Square {
+        // Can add common methods for quadrilaterals
+    }
+
+    final record Rectangle(double length, double width) implements Quadrilateral, Shape {
+        @Override
+        public String getName() {
+            return "Rectangle";
+        }
+    }
+
+    // A non-sealed class allows further extension
+    non-sealed class Square extends Rectangle implements Quadrilateral {
+        public Square(double side) {
+            super(side, side);
+        }
+
+        @Override
+        public String getName() {
+            return "Square";
+        }
+    }
+
+    // A class that extends a non-sealed class (Square)
+    class ColoredSquare extends Square {
+        private String color;
+
+        public ColoredSquare(double side, String color) {
+            super(side);
+            this.color = color;
+        }
+
+        @Override
+        public String getName() {
+            return color + " " + super.getName();
+        }
+    }
+
+
+    public static void describeShape(Shape shape) {
+        if (shape instanceof Circle c) {
+            System.out.println("This is a Circle with radius " + c.radius() + ". Name: " + c.getName());
+        } else if (shape instanceof Rectangle r) {
+            // This will catch both Rectangle and Square because Square extends Rectangle
+            System.out.println("This is a Rectangle with length " + r.length() + " and width " + r.width() + ". Name: " + r.getName());
+        } else {
+            // This 'else' is not strictly necessary if all permitted types are covered,
+            // but it's good practice or for future extensions.
+            System.out.println("Unknown shape: " + shape.getName());
+        }
+    }
+
+    public static void main(String[] args) {
+        Shape circle = new Circle(5.0);
+        Shape rectangle = new Rectangle(4.0, 6.0);
+        // To instantiate a non-static inner class (like Square), you need an instance of the outer class.
+        // However, Square is non-sealed, so it can be instantiated directly if it were static or in its own file.
+        Shape square = new SealedClasses().new Square(3.0);
+
+        describeShape(circle);
+        describeShape(rectangle);
+        describeShape(square);
+    }
+}
