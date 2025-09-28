@@ -2,9 +2,11 @@ package edu.javaschool.core_concepts.advancedfoundations;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collections;
 
 public class MapTypeDS {
     // Map Interface
@@ -13,7 +15,7 @@ public class MapTypeDS {
     // LinkedHasMap
     // ConcurrentHasMap
 
-    private static void hashMap() {
+    private static List<String> hashMap() {
         // HashMap:
         // - Stores key-value pairs.
         // - Implements the Map interface.
@@ -25,10 +27,10 @@ public class MapTypeDS {
         System.out.println("\n--- HashMap Demonstration ---");
         System.out.println("Use Case: General-purpose map where order is not important, and fast lookups/insertions are needed.");
         final HashMap<String, String> simpleMap = new HashMap<>();
-        populateAndPrintMap(simpleMap);
+        return populateAndReturnMap(simpleMap); 
     }
 
-    private static void mapHashMap() {
+    private static List<String> mapHashMap() {
         // HashMap:
         // - Stores key-value pairs.
         // - Implements the Map interface.
@@ -40,10 +42,10 @@ public class MapTypeDS {
         System.out.println("\n--- Map (HashMap implementation) Demonstration ---");
         System.out.println("Use Case: Demonstrating polymorphism, where the specific implementation (HashMap) is hidden behind the Map interface.");
         final Map<String, String> simpleMap = new HashMap<>();
-        populateAndPrintMap(simpleMap);
+        return populateAndReturnMap(simpleMap);
     }
 
-    private static void treeMap() {
+    private static List<String> treeMap() {
         // TreeMap:
         // - Stores key-value pairs in a sorted order based on the natural ordering of its keys,
         //   or by a Comparator provided at map creation time.
@@ -55,16 +57,16 @@ public class MapTypeDS {
         System.out.println("\n--- TreeMap Demonstration ---");
         System.out.println("Use Case: When you need keys to be stored in a sorted order (natural or custom comparator), e.g., for dictionaries, sorted lists of items.");
         final TreeMap<String, String> simpleMap = new TreeMap<>();
-        populateAndPrintMap(simpleMap);
+        return populateAndReturnMap(simpleMap);
     }
-    private static void mapTreeMap() {
+    private static List<String> mapTreeMap() {
         final Map<String, String> simpleMap = new TreeMap<>();
-        populateAndPrintMap(simpleMap);
         System.out.println("\n--- Map (TreeMap implementation) Demonstration ---");
         System.out.println("Use Case: Demonstrating polymorphism with a TreeMap, useful when you need sorted keys but want to program to the interface.");
+        return populateAndReturnMap(simpleMap);
     }
     
-    private static void linkedHashMap() {
+    private static List<String> linkedHashMap() {
         // LinkedHashMap:
         // - Stores key-value pairs in insertion order (or access order, if configured).
         // - Implements the Map interface.
@@ -77,17 +79,17 @@ public class MapTypeDS {
         System.out.println("\n--- LinkedHashMap Demonstration ---");
         System.out.println("Use Case: When you need to preserve the insertion order of elements, e.g., for caches (LRU cache), or maintaining a sequence of operations.");
         final LinkedHashMap<String, String> simpleMap = new LinkedHashMap<>();
-        populateAndPrintMap(simpleMap);
+        return populateAndReturnMap(simpleMap);
     }
     
-    private static void mapLinkedHashMap() {
+    private static List<String> mapLinkedHashMap() {
         final Map<String, String> simpleMap = new LinkedHashMap<>();
-        populateAndPrintMap(simpleMap);
         System.out.println("\n--- Map (LinkedHashMap implementation) Demonstration ---");
         System.out.println("Use Case: Demonstrating polymorphism with a LinkedHashMap, useful when order preservation is key but you want to use the generic Map interface.");
+        return populateAndReturnMap(simpleMap);
     }
     
-    private static void concurrentHasMap() {
+    private static List<String> concurrentHasMap() {
         // ConcurrentHashMap:
         // - A thread-safe implementation of the Map interface.
         // - Designed for high-concurrency applications.
@@ -100,14 +102,46 @@ public class MapTypeDS {
         System.out.println("\n--- ConcurrentHashMap Demonstration ---");
         System.out.println("Use Case: In multi-threaded environments where multiple threads need to access and modify the map concurrently without external synchronization, e.g., shared caches, thread-safe counters.");
         final ConcurrentHashMap<String, String> simpleMap = new ConcurrentHashMap<>();
-        populateAndPrintMap(simpleMap);
+        return populateAndReturnMap(simpleMap);
     }
     
-    private static void mapConcurrentHasMap() {
+    private static List<String> mapConcurrentHasMap() {
         final Map<String, String> simpleMap = new ConcurrentHashMap<>();
-        populateAndPrintMap(simpleMap);
         System.out.println("\n--- Map (ConcurrentHashMap implementation) Demonstration ---");
         System.out.println("Use Case: Demonstrating polymorphism with a ConcurrentHashMap, ideal for concurrent scenarios while programming to the Map interface.");
+        return populateAndReturnMap(simpleMap);
+    }
+
+    private static List<String> synchronizedMap() {
+        // SynchronizedMap (using Collections.synchronizedMap):
+        // - Creates a synchronized (thread-safe) wrapper around an existing Map.
+        // - All access to the backing map must be accomplished through the returned map.
+        // - Achieves thread safety by synchronizing on the map object itself for every method call.
+        // - Can lead to contention and reduced performance in high-concurrency scenarios
+        //   because only one thread can access the map at a time (global lock).
+        // - Allows null keys and null values if the underlying map allows them (e.g., HashMap).
+        System.out.println("\n--- Synchronized Map Demonstration ---");
+        System.out.println("Use Case: When you need a thread-safe map but are using an older Java version or have simple concurrency needs where a global lock is acceptable.");
+        Map<String, String> regularHashMap = new HashMap<>();
+        Map<String, String> synchronizedMap = Collections.synchronizedMap(regularHashMap);
+
+        // Populate and return the synchronized map
+        // Note: populateAndReturnMap expects a direct Map implementation,
+        // so we'll manually populate and then return keys.
+        // // For demonstration, we'll show its thread-safe nature in diffConcurrentHashAndHashMap.
+        // synchronizedMap.put("England", "London");
+        // synchronizedMap.put("Germany", "Berlin");
+        // synchronizedMap.put("France", "Paris");
+        // synchronizedMap.put("India", "New Dehli");
+        // synchronizedMap.put("Austria", "Wien");
+        // synchronizedMap.put("Norway", "Oslo");
+        // synchronizedMap.put("USA", "Washington DC");
+        // synchronizedMap.put(null, "Null Value"); // Allowed if underlying HashMap allows
+        // synchronizedMap.put("Italy", null); // Allowed if underlying HashMap allows
+
+        // System.out.println("Synchronized Map (initial): " + synchronizedMap);
+        // System.out.println("--------------------------------------------------");
+        return populateAndReturnMap(synchronizedMap);
     }
 
     // Implement a method to use these above different maps and explain the differences clearly with this return outputs.
@@ -135,15 +169,111 @@ public class MapTypeDS {
         System.out.println("--------------------------------------------------");
     }
 
-    private static void populateAndPrintMap(Map<String, String> simpleMap) {
+    private static <T extends Map<String, String>> List<String> populateAndReturnMap(T simpleMap) {
+        if (simpleMap instanceof HashMap) {
+            ((HashMap<String, String>) simpleMap).put(null, "Null Value"); // HashMap allows null key
+            simpleMap.put("Italy", null); // HashMap allows null values
+
+        } else if (simpleMap instanceof ConcurrentHashMap) {
+            // ConcurrentHashMap does not allow null keys or values
+            // ((ConcurrentHashMap<String, String>) simpleMap).put(null, "Null Value"); // Throws NullPointerException
+            // ((ConcurrentHashMap<String, String>) simpleMap).put("NullKey", null); // Throws NullPointerException
+        } else if (simpleMap instanceof TreeMap) {
+            // TreeMap does not allow null keys
+            // ((TreeMap<String, String>) simpleMap).put(null, "Null Value"); // Throws NullPointerException
+            simpleMap.put("Italy", null); // TreeMap allows null values
+        } else if (simpleMap instanceof LinkedHashMap) {
+            ((LinkedHashMap<String, String>) simpleMap).put(null, "Null Value"); // LinkedHashMap allows null key
+            simpleMap.put("Italy", null); // LinkedHashMap allows null values
+        } else if (simpleMap.getClass().getName().contains("SynchronizedMap")) { // Check for the internal class name
+            // Collections.synchronizedMap allows null keys and values if the underlying map does.
+            // The populateAndReturnMap method is designed to add specific keys and values.
+            // For a synchronized map, the underlying map (e.g., HashMap) would handle nulls.
+            // We've already handled the population for synchronizedMap in its dedicated method.
+            // This branch is mostly for type checking and to avoid issues if it were to be populated here.
+            simpleMap.put("Italy", null); 
+            simpleMap.put(null, "Null Value");
+        }
+
         simpleMap.put("England", "London");
+        simpleMap.put("Germany", "Berlin");
+        simpleMap.put("France", "Paris");
         simpleMap.put("India", "New Dehli");
         simpleMap.put("Austria", "Wien");
         simpleMap.put("Norway", "Oslo");
         simpleMap.put("Norway", "Oslo"); // Duplicate
         simpleMap.put("USA", "Washington DC");
-        System.out.println(simpleMap.getClass().getName() + " " + simpleMap);
         System.out.println("--------------------------------------------------");
+        return simpleMap.keySet().stream().toList();
+    }
+
+    private static void diffConcurrentHashAndHashMap() {
+        // Explain with an example with multiple threads
+        System.out.println("\n--- ConcurrentHashMap vs. HashMap in Multi-threading ---");
+        System.out.println("Use Case: Demonstrating thread-safety differences when multiple threads modify a map.");
+
+        // Scenario 1: HashMap (not thread-safe)
+        System.out.println("\n--- Using HashMap (Not Thread-Safe) ---");
+        Map<String, Integer> hashMap = new HashMap<>();
+        Runnable hashMapTask = () -> {
+            for (int i = 0; i < 1000; i++) {
+                hashMap.put(Thread.currentThread().getName() + "-" + i, i);
+            }
+        };
+
+        Thread t1 = new Thread(hashMapTask, "HashMap-Thread-1");
+        Thread t2 = new Thread(hashMapTask, "HashMap-Thread-2");
+        Thread t3 = new Thread(hashMapTask, "HashMap-Thread-3");
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("HashMap final size: " + hashMap.size());
+        // Expected: 3000, but often less due to lost updates or ConcurrentModificationException
+        // if iteration was involved during modification.
+        // For simple put operations, size might be 3000, but internal state could be corrupted.
+        // Accessing elements might lead to unexpected behavior or infinite loops.
+        System.out.println("Note: HashMap is not thread-safe. Its size might be inconsistent or operations could fail in a real concurrent scenario.");
+
+
+        // Scenario 2: ConcurrentHashMap (thread-safe)
+        System.out.println("\n--- Using ConcurrentHashMap (Thread-Safe) ---");
+        Map<String, Integer> concurrentHashMap = new ConcurrentHashMap<>();
+        Runnable concurrentHashMapTask = () -> {
+            for (int i = 0; i < 1000; i++) {
+                concurrentHashMap.put(Thread.currentThread().getName() + "-" + i, i);
+            }
+        };
+
+        Thread ct1 = new Thread(concurrentHashMapTask, "ConcurrentHashMap-Thread-1");
+        Thread ct2 = new Thread(concurrentHashMapTask, "ConcurrentHashMap-Thread-2");
+        Thread ct3 = new Thread(concurrentHashMapTask, "ConcurrentHashMap-Thread-3");
+
+        ct1.start();
+        ct2.start();
+        ct3.start();
+
+        try {
+            ct1.join();
+            ct2.join();
+            ct3.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("ConcurrentHashMap final size: " + concurrentHashMap.size());
+        // Expected: 3000. ConcurrentHashMap handles concurrent modifications safely.
+        System.out.println("Note: ConcurrentHashMap is thread-safe and ensures data consistency in concurrent environments.");
+        System.out.println("--------------------------------------------------");
+
+        
     }
 
     public static void main(String[] args) {
@@ -160,5 +290,10 @@ public class MapTypeDS {
 
         concurrentHasMap();
         mapConcurrentHasMap();
+
+        diffConcurrentHashAndHashMap();
+
+
+        synchronizedMap();
     }
 }
