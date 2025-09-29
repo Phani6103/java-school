@@ -19,10 +19,28 @@ public class ReverseString {
     public static String reverseStringBuffer(String str) {
         return new StringBuffer(str).reverse().toString();
     }
+
+    public static String reverseStringBigO(String str) {
+        int length = str.length();
+        char[] cha = str.toCharArray(); // work directly on char array
+        int left = 0;
+        int right = length - 1;
+
+        while (left < right) {
+            char temp = cha[left];
+            cha[left] = cha[right];
+            cha[right] = temp;
+            left++;
+            right--;
+        }
+
+        return new String(cha);
+    }
     public static void main(String[] args) {
-        String str = "Hello";
+        String str = "1234567";
         System.out.println(reverseString(str));
         System.out.println(reverseStringBuilder(str));
         System.out.println(reverseStringBuffer(str));
+        System.out.println(reverseStringBigO(str));
     }
 }
