@@ -37,7 +37,7 @@ public class ReverseString {
         return new String(cha);
     }
     public static void main(String[] args) {
-        String str = "1234567";
+        String str = "1234567890";
         System.out.println(reverseString(str));
         System.out.println(reverseStringBuilder(str));
         System.out.println(reverseStringBuffer(str));
