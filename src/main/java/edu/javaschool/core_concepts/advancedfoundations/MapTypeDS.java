@@ -124,23 +124,6 @@ public class MapTypeDS {
         System.out.println("Use Case: When you need a thread-safe map but are using an older Java version or have simple concurrency needs where a global lock is acceptable.");
         Map<String, String> regularHashMap = new HashMap<>();
         Map<String, String> synchronizedMap = Collections.synchronizedMap(regularHashMap);
-
-        // Populate and return the synchronized map
-        // Note: populateAndReturnMap expects a direct Map implementation,
-        // so we'll manually populate and then return keys.
-        // // For demonstration, we'll show its thread-safe nature in diffConcurrentHashAndHashMap.
-        // synchronizedMap.put("England", "London");
-        // synchronizedMap.put("Germany", "Berlin");
-        // synchronizedMap.put("France", "Paris");
-        // synchronizedMap.put("India", "New Dehli");
-        // synchronizedMap.put("Austria", "Wien");
-        // synchronizedMap.put("Norway", "Oslo");
-        // synchronizedMap.put("USA", "Washington DC");
-        // synchronizedMap.put(null, "Null Value"); // Allowed if underlying HashMap allows
-        // synchronizedMap.put("Italy", null); // Allowed if underlying HashMap allows
-
-        // System.out.println("Synchronized Map (initial): " + synchronizedMap);
-        // System.out.println("--------------------------------------------------");
         return populateAndReturnMap(synchronizedMap);
     }
 
